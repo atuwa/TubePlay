@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>player</title>
+<meta charset=utf-8>
+</head>
+<body>
+	<script>
+		// API読み込み
+		script = document.createElement('script');
+		script.src = "https://www.youtube.com/iframe_api";
+		firstScript = document.getElementsByTagName('script')[0];
+		firstScript.parentNode.insertBefore(script, firstScript);
+
+		// 動画呼び出し
+		function onYouTubeIframeAPIReady() {
+			player = new YT.Player('ytplayer', {
+				width : '480',
+				height : '285',
+				playerVars : {
+					'rel' : 0,
+					'autoplay' : 1,
+				//'controls' : 0
+				},
+				videoId : 'VIDEOID',
+				// イベントの設定
+				events : {
+					'onReady' : onPlayerReady,
+					'onStateChange' : onPlayerStateChange
+				// プレーヤーの準備ができたときに実行
+				}
+			});
+		}
+		// onStateChangeのコールバック関数
+		function onPlayerStateChange(event) {
+			if (event.data == '0') {
+				player.seekTo(0, true);
+				event.target.playVideo();
+			}
+		}
+		var playerReady = 0;
+
+		function isReady() {
+			return (playerReady);
+		}
+		// プレーヤーの準備ができたとき
+		function onPlayerReady(event) {
+			event.target.setVolume(10);
+			event.target.playVideo();
+			playerReady = 1;
+		}
+		function myPauseVideo() {
+			player.pauseVideo();
+		}
+		function myPlayVideo() {
+			player.playVideo();
+		}
+		function myMute() {
+			player.mute();
+		}
+		function myUnMute() {
+			player.unMute();
+		}
+		function mySetVolume(vol) {
+			player.setVolume(vol);
+		}
+		function myGetVolume() {
+			alert('現在の音量は' + player.getVolume() + ' です');
+		}
+	</script>
+	<div id="ytplayer"></div>
+	<div style="margin-bottom: 5px;">
+		<input type="button" name="btn1" value="ミュート(mute)"
+			onclick="myMute();" /> <input type="button" name="btn2"
+			value="ミュート解除(unMute)" onclick="myUnMute();" /> <input type="button"
+			name="btn3" value="ミュート状態(isMuted)" onclick="myIsMuted();" />
+	</div>
+	<div>
+		<input type="button" name="btn4" value="音量を設定(setVolume)"
+			onclick="mySetVolume(30);" /> <input type="button" name="btn5"
+			value="音量を取得(getVolume)" onclick="myGetVolume();" />
+	</div>
+	<div style="margin-bottom: 5px;">
+		<input type="button" name="btn1" value="再生(playVideo)"
+			onclick="myPlayVideo();" /> <input type="button" name="btn2"
+			value="一時停止(pauseVideo)" onclick="myPauseVideo();" /> <input
+			type="button" name="btn3" value="指定時間再生(seekTo)"
+			onclick="mySeekTo(0);" />
+	</div>
+</body>
+</html>
