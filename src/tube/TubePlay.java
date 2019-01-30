@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class TubePlay extends Application{
 	public static WebEngine webEngine;
 	private static StackPane root=new StackPane();
-	public static int HTTPport=50050,port=50051;
+	public static int HTTPport=50050;
 	private static Object Return;
 	private static boolean endScript=false;
 	public synchronized static Object executeScript(final String code) {
@@ -106,13 +106,13 @@ public class TubePlay extends Application{
 	}
 	@Override
 	public void start(Stage primaryStage) throws IOException{
-		primaryStage.setTitle("動画再生ブラウザ");
+		primaryStage.setTitle("WebBrowser");
 		WebView browser=new WebView();
 		webEngine=browser.getEngine();
 		root.getChildren().add(browser);
 		Scene scene=new Scene(root,500,400);
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		//loadWeb("tube.html?v=M7lc1UVf-VE");
+		loadWeb("tube.html?v=M7lc1UVf-VE");
 	}
 }

@@ -44,7 +44,7 @@ public class OperationServlet extends HttpServlet{
 				}catch(InterruptedException e){
 					e.printStackTrace();
 				}
-				TubePlay.executeScript("mySetVolume("+30+");");
+				if(req.getParameter("vol")==null)TubePlay.executeScript("mySetVolume("+30+");");
 			}
 		}
 		String volS=req.getParameter("vol");
