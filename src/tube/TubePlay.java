@@ -106,13 +106,13 @@ public class TubePlay extends Application{
 	}
 	@Override
 	public void start(Stage primaryStage) throws IOException{
-		primaryStage.setTitle("WebBrowser");
+		primaryStage.setTitle("動画再生ブラウザ");
 		WebView browser=new WebView();
 		webEngine=browser.getEngine();
 		root.getChildren().add(browser);
-		Scene scene=new Scene(root,500,350);
+		Scene scene=new Scene(root,500,400);
 		primaryStage.setScene(scene);
 		primaryStage.show();
-		loadWeb("tube.html?v=M7lc1UVf-VE");
+		//loadWeb("tube.html?v=M7lc1UVf-VE");
 	}
 }
