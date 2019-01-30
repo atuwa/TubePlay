@@ -30,7 +30,7 @@ public class TubePageServlet extends HttpServlet{
 		}
 		String vid=req.getParameter("v");
 		if(vid==null)vid="M7lc1UVf-VE";
-		System.out.println("v="+vid);
+		//System.out.println("v="+vid);
 		String s=data.replace("VIDEOID",vid);
 		out.print(s);
 		out.flush();

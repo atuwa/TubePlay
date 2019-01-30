@@ -1,4 +1,4 @@
-package tube;
+package nico;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class TubePageServlet extends HttpServlet{
+public class NicoPageServlet extends HttpServlet{
 	public static String data;
 	public void doGet(HttpServletRequest req,HttpServletResponse res) throws ServletException,IOException{
 		res.setCharacterEncoding("UTF-8");
 		PrintStream out=new PrintStream(res.getOutputStream(),false, "UTF-8");
 		if(data==null||req.getParameter("reload")!=null) {
-			InputStream is=getClass().getResourceAsStream("/player.html");
+			InputStream is=getClass().getResourceAsStream("/nico.html");
 			ByteArrayOutputStream baos=new ByteArrayOutputStream();
 			byte[] b=new byte[512];
 			int len;
@@ -29,7 +29,7 @@ public class TubePageServlet extends HttpServlet{
 			data=baos.toString("UTF-8");
 		}
 		String vid=req.getParameter("v");
-		if(vid==null)vid="M7lc1UVf-VE";
+		if(vid==null)vid="sm34373580";
 		//System.out.println("v="+vid);
 		String s=data.replace("VIDEOID",vid);
 		out.print(s);

@@ -12,6 +12,7 @@ public class OperationServlet extends HttpServlet{
 	public static String nowplay;
 	private static Object lock=new Object();
 	public void doGet(HttpServletRequest req,HttpServletResponse res) throws ServletException,IOException{
+		res.setContentType("text/plain; charset=utf-8");
 		res.setCharacterEncoding("UTF-8");
 		PrintStream out=new PrintStream(res.getOutputStream(),false, "UTF-8");
 		out.println(nowplay);

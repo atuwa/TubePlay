@@ -5,6 +5,7 @@
 </head>
 <body>
 	<script>
+	var loopCount=0;
 		// API読み込み
 		script = document.createElement('script');
 		script.src = "https://www.youtube.com/iframe_api";
@@ -32,7 +33,8 @@
 		}
 		// onStateChangeのコールバック関数
 		function onPlayerStateChange(event) {
-			if (event.data == '0') {
+			if (event.data == '0'&&loopCount<3) {
+				loopCount++;
 				player.seekTo(0, true);
 				event.target.playVideo();
 			}

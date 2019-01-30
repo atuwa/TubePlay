@@ -22,7 +22,7 @@ public class TubePlay extends Application{
 		endScript=false;
 		Platform.runLater(new Runnable(){
 			public void run() {
-				System.out.println("executeScript"+code);
+				//System.out.println("executeScript"+code);
 				Return=webEngine.executeScript(code);
 				endScript=true;
 			}
@@ -45,20 +45,28 @@ public class TubePlay extends Application{
 		System.out.println("youtube動画再生"+id);
 		loadWeb("tube.html?v="+id);
 	}
-	public static void play(String url) {
+	public static boolean play(String url) {
 		if(url.indexOf("https://www.youtube.com/watch?")==0) {
 			int Vindex=url.indexOf("?v=");
 			if(Vindex<0)Vindex=url.indexOf("&v=");
-			if(Vindex<0)return;
+			if(Vindex<0)return false;
 			String ss=url.substring(Vindex+3);
 			int end=ss.indexOf("&");
 			if(end<0)end=ss.length();
 			playTube(ss.substring(0,end));
+			return true;
 		}else if(url.indexOf("https://youtu.be/")==0) {
 			playTube(url.substring(17));
+			return true;
 		}
+		return false;
 	}
 	public static void main(String[] args){
+		if(args.length>0)try{
+			HTTPport=Integer.parseInt(args[0]);
+		}catch(NumberFormatException e) {
+
+		}
 		new Thread(){
 			public void run(){
 				HTTPServer.start(HTTPport);
