@@ -7,6 +7,58 @@
 <body>
 <script>
 var nico=new NicovideoPlayer('body', 'VIDEOID');
+
+function mySeekTo(point) {
+	nico.postMessage({
+	    eventName: 'seek',
+	    data: {
+	      time: point } });
+}
+function myPauseVideo() {
+	nico.postMessage({
+        eventName: 'pause',
+    });
+}
+function myPlayVideo() {
+	nico.postMessage({
+        eventName: 'play',
+    });
+}
+function myGetVolume() {
+	return VolumeData;
+}
+function mySetVolume(vol) {
+	nico.postMessage({
+        eventName: 'volumeChange',
+        data: {
+          volume: vol/100 } });
+	VolumeData=vol;
+}
+function myMute() {
+	nico.postMessage({
+        eventName: 'mute',
+        data: {
+          mute: true } });
+}
+function myUnMute() {
+	nico.postMessage({
+        eventName: 'mute',
+        data: {
+          mute: false } });
+}
 </script>
+<script>
+myPlayVideo();
+</script>
+	<div style="margin-bottom: 5px;">
+		<input type="button" name="btn4" value="音量を設定(setVolume)"
+			onclick="mySetVolume(30);" /><input type="button" name="btn5"
+			value="音量を取得(getVolume)" onclick="myGetVolume();" />
+	</div>
+	<div style="margin-bottom: 5px;">
+		<input type="button" name="btn1" value="再生(playVideo)"
+			onclick="myPlayVideo();" /> <input type="button" name="btn2"
+			value="一時停止(pauseVideo)" onclick="myPauseVideo();" />
+	</div>
 </body>
 </html>

@@ -15,7 +15,8 @@ public class OperationServlet extends HttpServlet{
 		res.setContentType("text/plain; charset=utf-8");
 		res.setCharacterEncoding("UTF-8");
 		PrintStream out=new PrintStream(res.getOutputStream(),false, "UTF-8");
-		out.println(nowplay);
+		if(req.getParameter("GETvolume")!=null)out.println(TubePlay.executeScript("myGetVolume();"));
+		else out.println(nowplay);
 		String stop=req.getParameter("stop");
 		if(stop!=null) {
 			TubePlay.executeScript("myPauseVideo();");
@@ -25,6 +26,27 @@ public class OperationServlet extends HttpServlet{
 		if(start!=null) {
 			TubePlay.executeScript("myPlayVideo();");
 			return;
+		}
+		String playN=req.getParameter("sm");
+		if(playN!=null) {
+			synchronized(lock) {
+				if(!playN.equals(nowplay)){
+					TubePlay.loadWeb("nico.html?v="+playN);
+					nowplay=playN;
+					try{
+						Thread.sleep(1500);
+					}catch(InterruptedException e){
+						e.printStackTrace();
+					}
+				}
+				//TubePlay.executeScript("myPlayVideo();");
+				try{
+					Thread.sleep(500);
+				}catch(InterruptedException e){
+					e.printStackTrace();
+				}
+				if(req.getParameter("vol")==null)TubePlay.executeScript("mySetVolume("+30+");");
+			}
 		}
 		String play=req.getParameter("v");
 		if(play!=null) {

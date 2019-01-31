@@ -39,16 +39,20 @@
 				event.target.playVideo();
 			}
 		}
+
 		var playerReady = 0;
 
 		function isReady() {
-			return (playerReady);
+			return playerReady;
 		}
 		// プレーヤーの準備ができたとき
 		function onPlayerReady(event) {
 			event.target.setVolume(10);
 			event.target.playVideo();
 			playerReady = 1;
+		}
+		function mySeekTo(point){
+			player.seekTo(point, true);
 		}
 		function myPauseVideo() {
 			player.pauseVideo();
@@ -66,7 +70,7 @@
 			player.setVolume(vol);
 		}
 		function myGetVolume() {
-			alert('現在の音量は' + player.getVolume() + ' です');
+			return player.getVolume();
 		}
 	</script>
 	<div id="ytplayer"></div>

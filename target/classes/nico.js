@@ -52,14 +52,15 @@ var _slicedToArray = function () {
 			throw new TypeError("Cannot call a class as a function");
 			}
 		}
+	var loopCount=0;
+	var VolumeData=30;
 	var NicovideoPlayer = function () {
 			function NicovideoPlayer(containerSelector, watchId) {_classCallCheck(this, NicovideoPlayer);
 		    this.playerId = (++NicovideoPlayer.playerId).toString();
 		    this.container = document.querySelector(containerSelector);
 		    this.watchId = watchId;
 		    this.state = {
-		      isRepeat: false };
-
+		      isRepeat: true };
 
 		    this.messageListener();
 		    this.render();
@@ -153,9 +154,6 @@ var _slicedToArray = function () {
 		            data: {
 		              mute: e.target.checked } });} });
 
-
-
-
 		      var seekElem = this.createActionHandler({
 		        inputType: 'range',
 		        labelText: 'シーク',
@@ -168,9 +166,6 @@ var _slicedToArray = function () {
 		            eventName: 'seek',
 		            data: {
 		              time: e.target.valueAsNumber } });} });
-
-
-
 
 		      var volumeElem = this.createActionHandler({
 		        inputType: 'range',
@@ -186,9 +181,6 @@ var _slicedToArray = function () {
 		            eventName: 'volumeChange',
 		            data: {
 		              volume: e.target.valueAsNumber } });} });
-
-
-
 
 		      controls.appendChild(playElem);
 		      controls.appendChild(muteElem);
@@ -293,6 +285,7 @@ var _slicedToArray = function () {
 		      // 音量の更新
 		      if (data.volume !== volume.valueAsNumber) {
 		        volume.value = data.volume;
+		        VolumeData= data.volume*100;
 		      }
 
 		      // バッファの更新
@@ -310,7 +303,7 @@ var _slicedToArray = function () {
 
 		        case 3: // 一時停止
 		        case 4: // 再生終了
-		          if (data.playerStatus === 4 && this.state.isRepeat) {
+		          if (data.playerStatus === 4 && this.state.isRepeat&&loopCount<3) {//ループ回数制限
 		            this.postMessage({
 		              eventName: 'seek',
 		              data: {
@@ -345,4 +338,6 @@ var _slicedToArray = function () {
 		        playerId: this.playerId },
 		      request);
 		      this.player.contentWindow.postMessage(message, NicovideoPlayer.origin);
-		    } }]);return NicovideoPlayer;}();NicovideoPlayer.playerId = 0;NicovideoPlayer.origin = 'https://embed.nicovideo.jp';
+		    } }]);
+		  return NicovideoPlayer;
+		    }();NicovideoPlayer.playerId = 0;NicovideoPlayer.origin = 'https://embed.nicovideo.jp';

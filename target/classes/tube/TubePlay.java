@@ -49,7 +49,8 @@ public class TubePlay extends Application{
 		loadWeb("tube.html?v="+id);
 	}
 	public static boolean play(String url) {
-		if(url.indexOf("https://www.youtube.com/watch?")==0) {
+		if(url.indexOf("https://www.youtube.com/watch?")==0||
+				url.indexOf("https://m.youtube.com/watch?")==0) {
 			int Vindex=url.indexOf("?v=");
 			if(Vindex<0)Vindex=url.indexOf("&v=");
 			if(Vindex<0)return false;
