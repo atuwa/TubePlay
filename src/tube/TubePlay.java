@@ -23,8 +23,11 @@ public class TubePlay extends Application{
 		Platform.runLater(new Runnable(){
 			public void run() {
 				//System.out.println("executeScript"+code);
-				Return=webEngine.executeScript(code);
-				endScript=true;
+				try{
+					Return=webEngine.executeScript(code);
+				}finally {
+					endScript=true;
+				}
 			}
 		});
 		try{
