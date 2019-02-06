@@ -19,7 +19,7 @@
 				height : '285',
 				playerVars : {
 					'rel' : 0,
-					'autoplay' : 1,
+				//	'autoplay' : 0,
 				//'controls' : 0
 				},
 				videoId : 'VIDEOID',
@@ -39,16 +39,15 @@
 				event.target.playVideo();
 			}
 		}
-
 		var playerReady = 0;
-
 		function isReady() {
 			return playerReady;
 		}
 		// プレーヤーの準備ができたとき
 		function onPlayerReady(event) {
-			event.target.setVolume(10);
+			event.target.mute();
 			event.target.playVideo();
+			player.setVolume(1);
 			playerReady = 1;
 		}
 		function mySeekTo(point){
@@ -58,6 +57,7 @@
 			player.pauseVideo();
 		}
 		function myPlayVideo() {
+			loopCount=0;
 			player.playVideo();
 		}
 		function myMute() {
@@ -67,10 +67,20 @@
 			player.unMute();
 		}
 		function mySetVolume(vol) {
+			player.unMute();
 			player.setVolume(vol);
 		}
 		function myGetVolume() {
 			return player.getVolume();
+		}
+		function myGetTitle() {
+			var xhr=new XMLHttpRequest;
+			xhr.open('get','https://gdata.youtube.com/feeds/api/videos/VIDEOID/related',true);
+			xhr.send('');
+			var title = xhr.responseXML.getElementsByTagName('title')[0].textContent;
+			title = title.replace('Videos related to','');
+			alert(title);
+			return title;
 		}
 	</script>
 	<div id="ytplayer"></div>
@@ -92,5 +102,6 @@
 			type="button" name="btn3" value="最初に移動(seekTo)"
 			onclick="mySeekTo(0);" />
 	</div>
+	<!-- <input type="button" name="btn6" value="myGetTitle" onclick="myGetTitle();" />-->
 </body>
 </html>

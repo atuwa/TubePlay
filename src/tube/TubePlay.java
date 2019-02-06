@@ -113,6 +113,7 @@ public class TubePlay extends Application{
 		primaryStage.setTitle("WebBrowser");
 		WebView browser=new WebView();
 		webEngine=browser.getEngine();
+		//webEngine.load("http://192.168.0.202/Minecraft/video.html");
 		root.getChildren().add(browser);
 		Scene scene=new Scene(root,500,400);
 		primaryStage.setScene(scene);

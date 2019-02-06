@@ -12,6 +12,7 @@ public class OperationServlet extends HttpServlet{
 	public static String nowplay;
 	private static Object lock=new Object();
 	public void doGet(HttpServletRequest req,HttpServletResponse res) throws ServletException,IOException{
+		System.gc();
 		res.setContentType("text/plain; charset=utf-8");
 		res.setCharacterEncoding("UTF-8");
 		PrintStream out=new PrintStream(res.getOutputStream(),false, "UTF-8");
@@ -27,17 +28,24 @@ public class OperationServlet extends HttpServlet{
 			TubePlay.executeScript("myPlayVideo();");
 			return;
 		}
-		String playN=req.getParameter("sm");
+		String playN=req.getParameter("n");
 		if(playN!=null) {
 			synchronized(lock) {
-				if(!playN.equals(nowplay)){
-					TubePlay.loadWeb("nico.html?v="+playN);
-					nowplay=playN;
+				TubePlay.loadWeb("nico.html?v="+playN);
+			}
+		}
+		String play=req.getParameter("v");
+		if(play!=null) {
+			synchronized(lock) {
+				if(!play.isEmpty()){
+					TubePlay.loadWeb("tube.html?v="+play);
+					nowplay="v="+play;
 					try{
 						Thread.sleep(1500);
 					}catch(InterruptedException e){
 						e.printStackTrace();
 					}
+					//System.out.println(TubePlay.executeScript("myGetTitle();"));
 				}
 				//TubePlay.executeScript("myPlayVideo();");
 				try{
@@ -48,19 +56,24 @@ public class OperationServlet extends HttpServlet{
 				if(req.getParameter("vol")==null)TubePlay.executeScript("mySetVolume("+30+");");
 			}
 		}
-		String play=req.getParameter("v");
-		if(play!=null) {
+		String list=req.getParameter("list");
+		if(list!=null) {
 			synchronized(lock) {
-				if(!play.equals(nowplay)){
-					TubePlay.loadWeb("tube.html?v="+play);
-					nowplay=play;
+				if(!list.isEmpty()){
+					StringBuilder sb=new StringBuilder("tube.html?list=");
+					sb.append(list);
+					String index=req.getParameter("index");
+					if(index!=null)sb.append("&index=").append(index);
+					TubePlay.loadWeb(sb.toString());
+					nowplay="list="+list;
 					try{
 						Thread.sleep(1500);
 					}catch(InterruptedException e){
 						e.printStackTrace();
 					}
+					//System.out.println(TubePlay.executeScript("myGetTitle();"));
 				}
-				TubePlay.executeScript("myPlayVideo();");
+				//TubePlay.executeScript("myPlayVideo();");
 				try{
 					Thread.sleep(500);
 				}catch(InterruptedException e){
@@ -71,14 +84,18 @@ public class OperationServlet extends HttpServlet{
 		}
 		String volS=req.getParameter("vol");
 		if(volS!=null) {
-			int radix=10;
-			if(volS.indexOf("0x")==0) {
-				radix=16;
-				volS=volS.substring(2);
-			}
 			try{
-				int vol=Integer.parseInt(volS,radix);
+				int vol=Integer.parseInt(volS);
 				TubePlay.executeScript("mySetVolume("+vol+");");
+			}catch(NumberFormatException e) {
+
+			}
+		}
+		String seekS=req.getParameter("seek");
+		if(seekS!=null) {
+			try{
+				int seek=Integer.parseInt(seekS);
+				TubePlay.executeScript("mySeekTo("+seek+");");
 			}catch(NumberFormatException e) {
 
 			}

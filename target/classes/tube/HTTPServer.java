@@ -45,6 +45,7 @@ public class HTTPServer{
 			server.join();
 		}catch(Exception e){
 			e.printStackTrace();
+			System.exit(500);
 		}
 	}
 	public static class LocalServlet extends HttpServlet{

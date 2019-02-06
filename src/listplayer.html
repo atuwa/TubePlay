@@ -22,7 +22,8 @@
 				//	'autoplay' : 0,
 				//'controls' : 0
 				},
-				videoId : 'VIDEOID',
+				//listType : 'user_uploads',
+				//list : 'PLVM-xs_PyE2nlc3kp2f5ViOMbfnmut9En',
 				// イベントの設定
 				events : {
 					'onReady' : onPlayerReady,
@@ -45,6 +46,15 @@
 		}
 		// プレーヤーの準備ができたとき
 		function onPlayerReady(event) {
+			player.loadPlaylist({
+	            'listType': 'playlist',
+	            //'list': encodeURIComponent('映画 トレーラー'),
+	            //'listType': 'user_uploads',
+	            'list': 'LISTID',
+	            'index': INDEX,
+	            'startSeconds': 0,
+	            'suggestedQuality': 'small'
+	        });
 			event.target.mute();
 			event.target.playVideo();
 			player.setVolume(1);
