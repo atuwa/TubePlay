@@ -33,10 +33,12 @@
 		}
 		// onStateChangeのコールバック関数
 		function onPlayerStateChange(event) {
-			if (event.data == '0'&&loopCount<3) {
-				loopCount++;
-				player.seekTo(0, true);
-				event.target.playVideo();
+			if (event.data == '0') {
+				if(loopCount<3){
+					loopCount++;
+					player.seekTo(0, true);
+					event.target.playVideo();
+				}else window.app.end();
 			}
 		}
 		var playerReady = 0;
@@ -82,6 +84,9 @@
 			alert(title);
 			return title;
 		}
+		function alertLoopCount(){
+			alert("LC="+loopCount);
+		}
 	</script>
 	<div id="ytplayer"></div>
 	<div style="margin-bottom: 5px;">
@@ -101,7 +106,10 @@
 			value="一時停止(pauseVideo)" onclick="myPauseVideo();" /> <input
 			type="button" name="btn3" value="最初に移動(seekTo)"
 			onclick="mySeekTo(0);" />
+			<input type="button" name="btn4" value="alertLoopCount"
+			onclick="alertLoopCount();" />
 	</div>
+	<p>動画ID=VIDEOID</p>
 	<!-- <input type="button" name="btn6" value="myGetTitle" onclick="myGetTitle();" />-->
 </body>
 </html>

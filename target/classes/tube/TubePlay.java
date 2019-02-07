@@ -6,11 +6,16 @@ import java.io.InputStreamReader;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker.State;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 
 public class TubePlay extends Application{
 	public static WebEngine webEngine;
@@ -25,6 +30,8 @@ public class TubePlay extends Application{
 				//System.out.println("executeScript"+code);
 				try{
 					Return=webEngine.executeScript(code);
+				}catch(Throwable t){
+					t.printStackTrace();
 				}finally {
 					endScript=true;
 				}
@@ -112,12 +119,37 @@ public class TubePlay extends Application{
 	public void start(Stage primaryStage) throws IOException{
 		primaryStage.setTitle("WebBrowser");
 		WebView browser=new WebView();
+		//System.out.println(CookieHandler.getDefault());
 		webEngine=browser.getEngine();
+		EventHandler<WebEvent<String>> AlertHandler=new EventHandler<WebEvent<String>>() {
+			@Override
+			public void handle(WebEvent<String> event){
+				System.out.println(event.getData());
+			}
+		};
+		webEngine.setOnAlert(AlertHandler);
+        webEngine.getLoadWorker().stateProperty().addListener(
+                (ObservableValue<? extends State> ov, State oldState,
+                    State newState) -> {
+                        //toolBar.getChildren().remove(toggleHelpTopics);
+                        if (newState == State.SUCCEEDED) {
+                            JSObject win=(JSObject) webEngine.executeScript("window");
+                            win.setMember("app", new JavaApp());
+                        }
+            });
 		//webEngine.load("http://192.168.0.202/Minecraft/video.html");
 		root.getChildren().add(browser);
 		Scene scene=new Scene(root,500,400);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		loadWeb("tube.html?v=M7lc1UVf-VE");
+	}
+	public class JavaApp{
+		public void end() {
+			OperationServlet.nowplay="NOT PLAYING";
+		}
+		public void print() {
+			System.out.println("TEST");
+		}
 	}
 }

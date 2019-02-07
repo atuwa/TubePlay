@@ -29,13 +29,13 @@ public class OperationServlet extends HttpServlet{
 			return;
 		}
 		String playN=req.getParameter("n");
+		String play=req.getParameter("v");
+		String list=req.getParameter("list");
 		if(playN!=null) {
 			synchronized(lock) {
 				TubePlay.loadWeb("nico.html?v="+playN);
 			}
-		}
-		String play=req.getParameter("v");
-		if(play!=null) {
+		}else if(play!=null) {
 			synchronized(lock) {
 				if(!play.isEmpty()){
 					TubePlay.loadWeb("tube.html?v="+play);
@@ -55,9 +55,7 @@ public class OperationServlet extends HttpServlet{
 				}
 				if(req.getParameter("vol")==null)TubePlay.executeScript("mySetVolume("+30+");");
 			}
-		}
-		String list=req.getParameter("list");
-		if(list!=null) {
+		}else if(list!=null) {
 			synchronized(lock) {
 				if(!list.isEmpty()){
 					StringBuilder sb=new StringBuilder("tube.html?list=");

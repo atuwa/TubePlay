@@ -22,8 +22,6 @@
 				//	'autoplay' : 0,
 				//'controls' : 0
 				},
-				//listType : 'user_uploads',
-				//list : 'PLVM-xs_PyE2nlc3kp2f5ViOMbfnmut9En',
 				// イベントの設定
 				events : {
 					'onReady' : onPlayerReady,
@@ -31,14 +29,24 @@
 				// プレーヤーの準備ができたときに実行
 				}
 			});
+			player.setLoop(true);
 		}
 		// onStateChangeのコールバック関数
 		function onPlayerStateChange(event) {
-			if (event.data == '0'&&loopCount<3) {
-				loopCount++;
-				player.seekTo(0, true);
-				event.target.playVideo();
+			//app.print();
+			//alert("StateChange="+event.data);
+			if (event.data == '0') {
+				//player.addEventListener('onStateChange', 'onPlayerStateChange');
+				//event.target.mute();
+				if(loopCount<5){//5曲再生していなかった場合、最初の曲をする
+					loopCount++;//1曲再生するたびにカウンタを進める
+					player.seekTo(0, true);
+					//event.target.playVideo();
+				}else player.setLoop(false);
 			}
+			if (document.getElementById('yt_status')) {
+	            document.getElementById('yt_status').value = event.data;
+	        }
 		}
 		var playerReady = 0;
 		function isReady() {
@@ -48,13 +56,12 @@
 		function onPlayerReady(event) {
 			player.loadPlaylist({
 	            'listType': 'playlist',
-	            //'list': encodeURIComponent('映画 トレーラー'),
-	            //'listType': 'user_uploads',
 	            'list': 'LISTID',
 	            'index': INDEX,
 	            'startSeconds': 0,
 	            'suggestedQuality': 'small'
 	        });
+			player.setLoop(true);
 			event.target.mute();
 			event.target.playVideo();
 			player.setVolume(1);
@@ -83,14 +90,11 @@
 		function myGetVolume() {
 			return player.getVolume();
 		}
-		function myGetTitle() {
-			var xhr=new XMLHttpRequest;
-			xhr.open('get','https://gdata.youtube.com/feeds/api/videos/VIDEOID/related',true);
-			xhr.send('');
-			var title = xhr.responseXML.getElementsByTagName('title')[0].textContent;
-			title = title.replace('Videos related to','');
-			alert(title);
-			return title;
+		function alartVolume() {
+			alert("vol="+player.getVolume());
+		}
+		function alertLoopCount(){
+			alert("LC="+loopCount);
 		}
 	</script>
 	<div id="ytplayer"></div>
@@ -103,7 +107,7 @@
 	<div>
 		<input type="button" name="btn4" value="音量を設定(setVolume)"
 			onclick="mySetVolume(30);" /> <input type="button" name="btn5"
-			value="音量を取得(getVolume)" onclick="myGetVolume();" />
+			value="音量を取得(getVolume)" onclick="alartVolume();" />
 	</div>
 	<div style="margin-bottom: 5px;">
 		<input type="button" name="btn1" value="再生(playVideo)"
@@ -111,7 +115,11 @@
 			value="一時停止(pauseVideo)" onclick="myPauseVideo();" /> <input
 			type="button" name="btn3" value="最初に移動(seekTo)"
 			onclick="mySeekTo(0);" />
+			<input type="button" name="btn4" value="alertLoopCount"
+			onclick="alertLoopCount();" />
 	</div>
+	<input type="text" name="yt_status" value="" id="yt_status" />
+	<p>リストID=LISTID</p>
 	<!-- <input type="button" name="btn6" value="myGetTitle" onclick="myGetTitle();" />-->
 </body>
 </html>
