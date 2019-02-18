@@ -5,3 +5,5 @@ indexの設定は省略できる。<br>
 java -jar TubePlay.jar 5050<br>
 とかで起動できます。<br>
 ポートを指定しなかった場合50050番になります。
+
+<b>TubePlay4eを使ってください。TubePlayは修正困難なバグが多いです。</b>
