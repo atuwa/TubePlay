@@ -103,6 +103,8 @@ public class TubePlay extends Application{
 							loadWeb("tube.html?v=M7lc1UVf-VE");
 						}else if("exit".equals(command)){
 							System.exit(0);//プログラム終了
+						}else if("gc".equals(command)){
+							System.gc();
 						}else {
 							play(command);
 						}
